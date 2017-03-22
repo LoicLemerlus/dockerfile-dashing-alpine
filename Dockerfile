@@ -1,9 +1,6 @@
-FROM ruby:2.3.1
+FROM ruby:2.4.0-alpine
+#FROM ruby:2.3.1
 
-MAINTAINER Fredrik Vihlborg <fredrik.wihlborg@gmail.com>
-RUN apt-get update && \
-    apt-get -y install nodejs && \
-    apt-get -y clean
 RUN gem install bundler dashing
 RUN mkdir /dashing && \
     dashing new dashing && \
