@@ -1,29 +1,18 @@
-FROM ruby:2.4.0-alpine
-#FROM ruby:2.3.1
+FROM ruby:2.4.1-alpine
 
+RUN apk add --update g++ make nodejs
 RUN gem install bundler dashing
 RUN mkdir /dashing && \
     dashing new dashing && \
     cd /dashing && \
-    bundle && \
-    ln -s /dashing/dashboards /dashboards && \
-    ln -s /dashing/jobs /jobs && \
-    ln -s /dashing/assets /assets && \
-    ln -s /dashing/lib /lib-dashing && \
-    ln -s /dashing/public /public && \
-    ln -s /dashing/widgets /widgets && \
-    mkdir /dashing/config && \
-    mv /dashing/config.ru /dashing/config/config.ru && \
-    ln -s /dashing/config/config.ru /dashing/config.ru && \
-    ln -s /dashing/config /config
+    bundle
 
-COPY run.sh /
+VOLUME ["/dashing"]
 
-VOLUME ["/dashboards", "/jobs", "/lib-dashing", "/config", "/public", "/widgets", "/assets"]
 
 ENV PORT 3030
 EXPOSE $PORT
 WORKDIR /dashing
 
-CMD ["/run.sh"]
+CMD /usr/local/bundle/bin/bundle install; /usr/local/bundle/bin/dashing start
 
